@@ -14,6 +14,7 @@ const User=require('./models/user');
 //ROUTES
 const signRoutes=require('./routes/sign');
 const userRoutes=require('./routes/user');
+const Chat = require('./models/chats');
 
 //ROUTER
 app.use(cors());
@@ -26,9 +27,12 @@ app.use((req,res)=>{
     res.sendFile(path.join(__dirname,`frontend`,`${req.url}`));
 })
 
+//Relations
+User.hasMany(Chat);
+
 sequelize
-// .sync()
-.sync({force:true})
+.sync()
+// .sync({force:true})
 .then(result=>{
     app.listen(3000);
 })

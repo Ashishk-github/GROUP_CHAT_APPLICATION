@@ -1,5 +1,6 @@
 const bcrypt=require('bcrypt');
 const User = require('../models/user');
+const Chat=require('../models/chats');
 const jwt = require('jsonwebtoken');
 function generateAccessToken(id) {
   return jwt.sign(id, process.env.TOKEN_SECRET);
@@ -15,7 +16,8 @@ exports.signup=async (req,res)=>{
         if(emailExist || phnoExist) return res.json({status:403})
         const password=await bcrypt.hash(pass,10);
         // console.log(password);
-        const user=await User.create({name,email,phno,password});
+        await User.create({name,email,phno,password});
+        await Chat.create({name:name,msg:"joined"});
         res.json({status:200})
     }catch(err){
         console.log(err);
