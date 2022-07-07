@@ -1,0 +1,59 @@
+*{
+    box-sizing: content-box;
+}
+#login-body{
+display: flex;
+}
+#login-body form{
+    border: 1px solid coral;
+    border-radius: 8%;
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    padding-top: 2rem;
+    padding-bottom: 1rem;
+    background-color: rgb(20, 20, 20);
+    box-shadow: 40%;
+}
+#login-body form img{
+    display: block;
+    width: 150px;
+    height: 150px;
+    margin-left: auto;
+    margin-right: auto;
+}
+#login-body form p{
+    border-radius: 8%;
+    text-align: center;
+    color: gray;
+    border: none;
+    background-color: white;
+}
+#login-body form input{
+    border: none;
+    width: 90%;
+    height: 20px;
+}
+#login-body form button{
+    border: none;
+    cursor: pointer;
+    width: 90%;
+    height: 35px;
+    border-radius: 8%;
+    color: whitesmoke;
+    background-color: rgb(58, 45, 45);
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+#signup-login{
+    width: 100%;
+    text-align: center;
+    color: white;
+}
+#login-body form a{
+    color: white;
+}
+
