@@ -5,19 +5,21 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./signup.css">
+    <script src="./signup.js"></script>
     <title>SIGN UP</title>
 </head>
 <body id="signup-body">
-    <form method="post" class="signup-form" action="http://localhost:3000/signup">
+    <form method="post" class="signup-form" action="http://localhost:3000/signup" id="signup-form">
         <img src="https://cdn1.vectorstock.com/i/thumb-large/95/90/conversation-chat-infinity-people-logo-icon-vector-32829590.jpg" alt="group chat logo">
+        <strong class="error" id="error"></strong>
         <p><label for="name">NAME</label><br>
-            <input type="text" name="name"></p>
+            <input type="text" name="name" required="required" ></p>
         <p><label for="email">EMAIL</label><br>
-            <input type="text" name="email"></p>
+            <input type="text" name="email" required="required"></p>
         <p><label for="phno">PHONE NUMBER</label><br>
-            <input type="text" name="phno"></p>
+            <input type="text" name="phno" required="required" pattern="[0-9]{10}"></p>
         <p><label for="password">PASSWORD</label><br>
-            <input type="password" name="password"></p>
+            <input type="password" name="password" required="required"></p>
         <button id="register-btn" type="submit" >REGISTER</button>
         <section id="login-signup"><span>Already a user?</span><a href="./login.html">Login</a></section>
     </form>

@@ -1,5 +1,6 @@
 *{
     box-sizing: content-box;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
 #login-body{
 display: flex;
@@ -32,6 +33,7 @@ display: flex;
     background-color: white;
 }
 #login-body form input{
+    text-align: center;
     border: none;
     width: 90%;
     height: 20px;
@@ -56,4 +58,7 @@ display: flex;
 #login-body form a{
     color: white;
 }
-
+#error{
+    color: red;
+    text-align: center;
+}

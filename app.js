@@ -13,20 +13,22 @@ const User=require('./models/user');
 
 //ROUTES
 const signRoutes=require('./routes/sign');
+const userRoutes=require('./routes/user');
 
 //ROUTER
-app.use(cors())
-app.use(bodyParser.urlencoded({extended:true}))
+app.use(cors());
+app.use(bodyParser.urlencoded({extended:true}));
 app.use(bodyParser.json());
 
-app.use(signRoutes)
+app.use(signRoutes);
+app.use(userRoutes);
 app.use((req,res)=>{
     res.sendFile(path.join(__dirname,`frontend`,`${req.url}`));
 })
 
 sequelize
-.sync()
-// .sync({force:true})
+// .sync()
+.sync({force:true})
 .then(result=>{
     app.listen(3000);
 })
