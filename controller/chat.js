@@ -1,10 +1,15 @@
 const User = require('../models/user');
 const Chat = require('../models/chats');
+const {Op}=require('sequelize');
 
 exports.getChats=async(req,res)=>{
     try {
+        const chat_id=req.query.id;
         userId=req.user.id;
-        const chat=await Chat.findAll();
+        const chat=await Chat.findAll({where:{
+            id:{[Op.gt]:chat_id}
+        }});
+        if(chat.length===0) return res.json({status:200});
         res.json({chat,status:200});
     } catch (err) {
         console.log(err);
