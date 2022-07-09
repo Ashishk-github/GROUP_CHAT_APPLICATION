@@ -1,13 +1,13 @@
 var chatLog=[];
 // var selfChat=[];
 var groups=[];
-var groupSelected;
+var groupSelected=0;
 window.addEventListener('DOMContentLoaded',async ()=>{
     // if(localStorage.getItem('chats')) chatLog=JSON.parse(localStorage.getItem('chats'));
     // else localStorage.setItem('chats',JSON.stringify(chatLog));
 
-    // if(localStorage.getItem('selfChat')) selfChat=JSON.parse(localStorage.getItem('selfChat'));
-    // else localStorage.setItem('selfChat',JSON.stringify(selfChat));
+    if(localStorage.getItem('groupSelected')) groupSelected=parseInt(localStorage.getItem('groupSelected')) ;
+    else localStorage.setItem('groupSelected',groupSelected);
 
     if(localStorage.getItem('groups')) groups=JSON.parse(localStorage.getItem('groups'));
     else localStorage.setItem('groups',JSON.stringify(groups));
@@ -29,50 +29,37 @@ window.addEventListener('DOMContentLoaded',async ()=>{
         // addChat(chat.data.chat);
     });
     await updateGroups();
-    showGroups();
+    await showGroups();
 
     document.getElementById('group-container').addEventListener("click",async(event)=>{
         event.preventDefault();
         console.log(event.target.id);
         const id=event.target.id;
-        const chats=await axios.get(`http://localhost:3000/chat/${id}?id=0`,
+        if(id=='info'){
+            const t=event.target.parentNode.firstChild.id;
+            console.log(t,event.target.parentNode);
+            localStorage.setItem('groupSelected',t);
+            location.href='./groupinfo.html'
+            return
+        }
+        getChat(id)
+    });
+    getChat(groupSelected);
+    // getChat();
+    // setInterval(()=>getChat(),1000);
+})
+async function getChat(id){
+    const chats=await axios.get(`http://localhost:3000/chat/${id}?id=0`,
         {
             headers: {
                       'Authorization': `Bearer ${localStorage.getItem('token')}` 
                     }}
         );
-        groupSelected=id;
-        chatLog=chats.data;
-        showChats();
-        // chatLog.push(chat.data.chat);
-        // document.getElementById('msg-input').value='';
-        // addChat(chat.data.chat);
-    });
-    // showChats();
-    // getChat();
-    // setInterval(()=>getChat(),1000);
-})
-// async function getChat(){
-//     const chat_id=(chatLog.length>0)?(chatLog[chatLog.length-1].id):0
-//     const self_chat=(selfChat.length>0)?(selfChat[selfChat.length-1].id):0
-//     const chats=await axios.get(`http://localhost:3000/chat?id=${chat_id}&user=${self_chat}`,{
-//         headers: {
-//                   'Authorization': `Bearer ${localStorage.getItem('token')}` 
-//                 }}
-//     );
-//     // console.log(chats);
-//     if(!chats.data.chat) return;
-//     chatLog=chatLog.concat(chats.data.chat);
-//     selfChat=selfChat.concat(chats.data.self);
-//     if(chatLog.length>1000){
-//         const length=chatLog.length-1000;
-//         chatLog.splice(0,length);
-//     }
-//     const chatLS=JSON.stringify(chatLog)
-//     localStorage.setItem('chats',chatLS)
-//     localStorage.setItem('selfChat',JSON.stringify(selfChat));
-//     showChats();
-// }
+    groupSelected=id;
+    localStorage.setItem('groupSelected',groupSelected);
+    chatLog=chats.data;
+    showChats();
+}
 
 async function showChats(){
     const chatBox=document.getElementById('chat-container');
@@ -108,7 +95,7 @@ function showGroups(){
     if(groups.length>0) table.innerHTML='';
     for(x of groups){
         const tr=document.createElement('tr');
-        tr.innerHTML=`<td id='${x.id}'>${x.name}</td>`;
+        tr.innerHTML=`<td id='${x.id}'>${x.name}</td><button id="info">i</button>`;
         table.appendChild(tr);
     }
 }

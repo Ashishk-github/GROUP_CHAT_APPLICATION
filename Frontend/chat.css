@@ -6,10 +6,7 @@ body #chattable-container{
     position:absolute;
     left: 30%;
     top: 10%;
-    right: auto;
-    border: 2px solid yellowgreen;
-    border-radius: 2%;
-    box-shadow: 1px 2px 3px 4px rgb(209, 252, 124);
+    margin-bottom: 30%;
     width: 70%;
     height:auto;
 }
@@ -19,16 +16,14 @@ body #chattable-container{
     width: 100%;
 }
 #chat-container tr {
-    height: 30px;
+    height: 60px;
     font-size: 20px;
 }
 #chat-container tr:nth-child(even){
     background-color: rgb(209, 209, 209);
 }
 #chat-body div {
-    position: absolute;
-    width:68%;
-    margin: 1%;
+    width:70%;
     position: fixed;
     bottom: 0px;
     left: 30%;
@@ -54,21 +49,21 @@ body #chattable-container{
     border: none;
 }
 #chat-body #grouptable-container{
-    position:absolute;
+    position:static;
     left: 0%;
-    top: 10%;
+    margin-top: 10%;
     right: auto;
-    border: 2px solid yellowgreen;
-    border-radius: 2%;
-    box-shadow: 1px 2px 3px 4px rgb(209, 252, 124);
+    border-right: 1px solid yellowgreen;
     width: 28%;
     height:565px;
 }
 #chat-body #group-container{
     height: 100%;
+    width: 90%;
     margin-bottom: 8%;
 }
 #group-container tr {
+    border-top: 1px solid black;
     height: 30px;
     font-size: 20px;
 }
