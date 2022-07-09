@@ -3,8 +3,8 @@ const adminController=require('../controller/admin');
 const auth=require('../controller/authenticator');
 const router=express.Router();
 
-router.post('/addmembers',auth,adminController.addMembers);
+router.post('/addmember',auth,adminController.addMembers);
 
-// router.post('/signup',signController.signup);
+router.post('/removemember',auth,adminController.removeMembers);
 
 module.exports=router;
