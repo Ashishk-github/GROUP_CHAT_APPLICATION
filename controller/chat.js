@@ -1,16 +1,24 @@
 const User = require('../models/user');
 const Chat = require('../models/chats');
 const {Op}=require('sequelize');
+const Groups = require('../models/groups');
+const GroupMem = require('../models/group members');
 
 exports.getChats=async(req,res)=>{
     try {
+        const group_id=req.params.id; 
         const chat_id=req.query.id;
-        userId=req.user.id;
-        const chat=await Chat.findAll({where:{
-            id:{[Op.gt]:chat_id}
+        const userId=req.user.id;
+        console.log(1)
+        const user=await User.findByPk(userId);
+        const group=await user.getGroups({where:{id:group_id}});
+        // console.log(group);
+        const chats=await group[0].getChats({where:{id:{
+            [Op.gt]:chat_id
+        }
         }});
-        if(chat.length===0) return res.json({status:200});
-        res.json({chat,status:200});
+        res.json(chats)
+        
     } catch (err) {
         console.log(err);
         res.sendStatus(500)
@@ -18,15 +26,13 @@ exports.getChats=async(req,res)=>{
 }
 exports.postChat=async(req,res)=>{
     try {
-        userId=req.user.id;
-        const user=await User.findByPk(userId);
-        // console.log(user,userId)
-        const name=user.name;
-        
-        const msg=req.body.msg
-        if(!msg) return res.json();
-        const chat=await user.createChat({name,msg});
-        res.json({chat,status:200});
+        const user=await User.findByPk(req.user.id);
+        const groupId=req.body.groupId;
+        const group=await Groups.findByPk(groupId);
+        const chat=await group.createChat({name:user.name,msg:req.body.msg,groupId:groupId})
+        // const ggg=await user.getGroups();
+        // const chatss=await ggg[0].getChats();
+        res.json({status:200});
     } catch (err) {
         console.log(err);
         res.sendStatus(500)

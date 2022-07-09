@@ -2,39 +2,150 @@ body{
     display: block;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
-body table{
-border-collapse: collapse;
-width: 100%;
+body #chattable-container{
+    position:absolute;
+    left: 30%;
+    top: 10%;
+    right: auto;
+    border: 2px solid yellowgreen;
+    border-radius: 2%;
+    box-shadow: 1px 2px 3px 4px rgb(209, 252, 124);
+    width: 70%;
+    height:auto;
 }
-tr {
+#chat-body #chat-container{
+    height: 100%;
+    margin-bottom: 8%;
+    width: 100%;
+}
+#chat-container tr {
     height: 30px;
     font-size: 20px;
 }
-tr:nth-child(even){
+#chat-container tr:nth-child(even){
     background-color: rgb(209, 209, 209);
 }
-body div {
-    width: 100%;
+#chat-body div {
+    position: absolute;
+    width:68%;
+    margin: 1%;
     position: fixed;
-    bottom: 20px;
+    bottom: 0px;
+    left: 30%;
     justify-content: center;
     background-color: rgb(240, 240, 240);
 }
-body div button{
+#chat-body div button{
     cursor: pointer;
     border: none;
     padding: 2%;
     border-radius: 50%;
 }
-body div input{
-    width: 80%;
+#chat-body div input{
+    width: 87%;
     font-size: 20px;
     height: 40px;
     border: 4px solid black;
     border-radius: 10%;
 }
-body div button img{
+#chat-body div button img{
     width: 40px;
     height: 40px;
     border: none;
+}
+#chat-body #grouptable-container{
+    position:absolute;
+    left: 0%;
+    top: 10%;
+    right: auto;
+    border: 2px solid yellowgreen;
+    border-radius: 2%;
+    box-shadow: 1px 2px 3px 4px rgb(209, 252, 124);
+    width: 28%;
+    height:565px;
+}
+#chat-body #group-container{
+    height: 100%;
+    margin-bottom: 8%;
+}
+#group-container tr {
+    height: 30px;
+    font-size: 20px;
+}
+#header{
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 10%;
+    background-color: rgb(36, 54, 13);
+    color: white;
+    width: 100%;
+}
+#header span{
+    position: absolute;
+    display: flex;
+    width: 20%;
+    min-width: 150px;
+    top: 5%;
+    left: 1%;
+    border-left: 1px solid white;
+    border-right: 1px solid white;
+    text-align: center;
+    height: 90%;
+}
+#header span a{
+    color: white;
+    font-size: 22px;
+    width: 100%;
+    text-align: center;
+    margin-top: 10%;
+}
+
+#create-body div{
+    border: none;
+    border-radius: 8%;
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    padding-top: 2rem;
+    padding-bottom: 1rem;
+    background-color: yellowgreen;
+    font-size: larger;
+    box-shadow: 40%;
+    text-align: center;
+    color: white;
+}
+#create-body input{
+    border: none;
+    height: 30px;
+    width: 70%;
+}
+#create-body button{
+    height: 30px;
+    border: none;
+    width: 25%;
+    margin: 10px;
+    color: white;
+    background-color: rgb(56, 75, 17);
+    cursor: pointer;
+}
+#create-body #group-add{
+    border: none;
+    border-radius: 8%;
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    padding-top: 2rem;
+    padding-bottom: 1rem;
+    background-color: yellowgreen;
+    font-size: larger;
+    margin-top: 1%;
+    box-shadow: 40%;
+    text-align: center;
+    color: white;
+    height: max-content;
 }

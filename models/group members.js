@@ -1,16 +1,15 @@
 const Sequelize=require('sequelize');
 const sequelize=require('../util/database');
-const Chat=sequelize.define('chat',{
+const GroupMem=sequelize.define('groupmembers',{
     id: {
         type: Sequelize.INTEGER,
         autoIncrement: true,
         allowNull: false,
         primaryKey: true
       },
-    name: Sequelize.STRING,
-    msg:{
-      type: Sequelize.STRING,
-      allowNull: false,
+    accepted:{
+      type:Sequelize.BOOLEAN,
+      defaultValue:false
     }
 });
-module.exports=Chat;
+module.exports=GroupMem;

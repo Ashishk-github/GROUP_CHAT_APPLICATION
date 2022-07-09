@@ -16,8 +16,7 @@ exports.signup=async (req,res)=>{
         if(emailExist || phnoExist) return res.json({status:403})
         const password=await bcrypt.hash(pass,10);
         // console.log(password);
-        await User.create({name,email,phno,password});
-        await Chat.create({name:name,msg:"joined"});
+        await User.create({name,email,phno,password,invites:{"invites":[]}});
         res.json({status:200})
     }catch(err){
         console.log(err);

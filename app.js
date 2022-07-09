@@ -10,11 +10,16 @@ const sequelize = require('./util/database');
 
 //MODELS
 const User=require('./models/user');
+const Chat=require('./models/chats');
+const Groups=require('./models/groups');
+// const Admin=require('./models/admin');
+const GroupMem=require('./models/group members');
 
 //ROUTES
 const signRoutes=require('./routes/sign');
 const userRoutes=require('./routes/user');
-const Chat = require('./models/chats');
+const groupRoutes=require('./routes/groups');
+const adminRoutes=require('./routes/admin');
 
 //ROUTER
 app.use(cors());
@@ -23,12 +28,21 @@ app.use(bodyParser.json());
 
 app.use(signRoutes);
 app.use(userRoutes);
+app.use(groupRoutes);
+app.use(adminRoutes);
 app.use((req,res)=>{
     res.sendFile(path.join(__dirname,`frontend`,`${req.url}`));
 })
 
 //Relations
+User.belongsToMany(Groups,{through:GroupMem});
+Groups.belongsToMany(User,{through:GroupMem});
+Chat.belongsTo(Groups);
+Groups.hasMany(Chat);
+Chat.belongsTo(User);
 User.hasMany(Chat);
+// Groups.hasMany(GroupMem,{onDelete:'CASCADE'});
+// User.hasMany(GroupMem,{onDelete:'CASCADE'});
 
 sequelize
 .sync()

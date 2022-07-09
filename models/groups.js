@@ -1,6 +1,6 @@
 const Sequelize=require('sequelize');
 const sequelize=require('../util/database');
-const Chat=sequelize.define('chat',{
+const Groups=sequelize.define('group',{
     id: {
         type: Sequelize.INTEGER,
         autoIncrement: true,
@@ -8,9 +8,6 @@ const Chat=sequelize.define('chat',{
         primaryKey: true
       },
     name: Sequelize.STRING,
-    msg:{
-      type: Sequelize.STRING,
-      allowNull: false,
-    }
+    admin:Sequelize.INTEGER
 });
-module.exports=Chat;
+module.exports=Groups;
