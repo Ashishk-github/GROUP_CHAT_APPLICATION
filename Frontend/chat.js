@@ -44,7 +44,7 @@ window.addEventListener('DOMContentLoaded',async ()=>{
         }
         getChat(id)
     });
-    getChat(groupSelected);
+    if(groupSelected!==0) getChat(groupSelected);
     // getChat();
     // setInterval(()=>getChat(),1000);
 })

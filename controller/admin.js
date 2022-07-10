@@ -1,7 +1,7 @@
 const User = require('../models/user');
 const Chat = require('../models/chats');
 const Groups = require('../models/groups');
-// const Admin = require('../models/admin');
+const GroupMem = require('../models/group members');
 const {Op}=require('sequelize');
 
 exports.addMembers=async(req,res)=>{
@@ -22,13 +22,32 @@ exports.addMembers=async(req,res)=>{
     }
 }
 
+exports.showMembers=async(req,res)=>{
+    try{
+        const user=await User.findByPk(req.user.id);
+        const group=await Groups.findByPk(req.body.gid);
+        // console.log(group.admin!==user.id);
+        if(group.admin!==user.id) {
+            return res.sendStatus(401);
+        }
+        const members=await group.getUsers();
+        let result=[]
+        for(x of members) result.push({id:x.id,name:x.name,phno:x.phno,email:x.email});
+        res.json(result);
+
+    } catch (err) {
+        console.log(err);
+        res.sendStatus(500)
+    }
+}
+
 exports.removeMembers=async(req,res)=>{
     try{
         const user=await User.findByPk(req.user.id);
         const group=await Groups.findByPk(req.body.gid);
         if(!group.admin===user.id) return res.sendStatus(401);
-        const [member]=await group.getUser({where:{userId:req.body.id}});
-        const remove=await member.Groupmember.destroy();
+        const [member]=await group.getUsers({where:{id:req.body.id}});
+        const remove=await member.groupmembers.destroy();
         res.json(remove);
 
     } catch (err) {

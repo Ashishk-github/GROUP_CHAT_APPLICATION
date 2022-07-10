@@ -5,6 +5,8 @@ const router=express.Router();
 
 router.post('/addmember',auth,adminController.addMembers);
 
+router.post('/getmember',auth,adminController.showMembers);
+
 router.post('/removemember',auth,adminController.removeMembers);
 
 module.exports=router;

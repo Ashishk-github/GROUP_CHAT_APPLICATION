@@ -20,13 +20,16 @@ const signRoutes=require('./routes/sign');
 const userRoutes=require('./routes/user');
 const groupRoutes=require('./routes/groups');
 const adminRoutes=require('./routes/admin');
+const googleRoutes=require('./routes/google');
+
+//AUTH
 
 //ROUTER
 app.use(cors());
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(bodyParser.json());
-
 app.use(signRoutes);
+app.use('/auth',googleRoutes);
 app.use(userRoutes);
 app.use(groupRoutes);
 app.use(adminRoutes);

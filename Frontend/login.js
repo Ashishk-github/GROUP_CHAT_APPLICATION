@@ -10,6 +10,9 @@ window.addEventListener('DOMContentLoaded',()=>{
         console.log(body)
         if(body.status===200) {
             localStorage.setItem('token',body.token);
+            localStorage.setItem('groupSelected','0');
+            localStorage.setItem('groups','[]');
+            localStorage.setItem('Members',`[]`);
             location.href='http://localhost:3000/chat.html';
         }
         else if(body.status===403) errmsg('Please enter correct password');
