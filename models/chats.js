@@ -9,8 +9,12 @@ const Chat=sequelize.define('chat',{
       },
     name: Sequelize.STRING,
     msg:{
-      type: Sequelize.STRING,
+      type: Sequelize.TEXT,
       allowNull: false,
+    },
+    image:{
+      type:Sequelize.BOOLEAN,
+      defaultValue:false
     }
 });
 module.exports=Chat;

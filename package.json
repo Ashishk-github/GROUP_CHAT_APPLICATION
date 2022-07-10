@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/Ashishk-github/GROUP_CHAT_APPLICATION#readme",
   "dependencies": {
+    "aws-sdk": "^2.1171.0",
     "bcrypt": "^5.0.1",
     "body-parser": "^1.20.0",
     "cookie-session": "^2.0.0",

@@ -3,17 +3,12 @@ var chatLog=[];
 var groups=[];
 var groupSelected=0;
 window.addEventListener('DOMContentLoaded',async ()=>{
-    // if(localStorage.getItem('chats')) chatLog=JSON.parse(localStorage.getItem('chats'));
-    // else localStorage.setItem('chats',JSON.stringify(chatLog));
-
     if(localStorage.getItem('groupSelected')) groupSelected=parseInt(localStorage.getItem('groupSelected')) ;
     else localStorage.setItem('groupSelected',groupSelected);
 
     if(localStorage.getItem('groups')) groups=JSON.parse(localStorage.getItem('groups'));
     else localStorage.setItem('groups',JSON.stringify(groups));
 
-    // await getChat();
-    // // console.log(4)
     document.getElementById('send-msg').addEventListener("click",async(event)=>{
         await axios.post('http://localhost:3000/chat',{
             groupId:groupSelected,
@@ -28,6 +23,37 @@ window.addEventListener('DOMContentLoaded',async ()=>{
         document.getElementById('msg-input').value='';
         // addChat(chat.data.chat);
     });
+    const file=document.getElementById('file-upload')
+    file.addEventListener('change',async()=>{
+        try {
+            if(!confirm(`are you sure want to upload ${file.files[0].name}`)) return;
+        const url=await axios.get('http://localhost:3000/media',{
+            headers: {
+                      'Authorization': `Bearer ${localStorage.getItem('token')}` ,
+                    }});
+        console.log(url);
+        
+        await fetch(url.data.url, {
+            method:"PUT",
+            headers: {
+              "Content-Type": "multipart/form-data"
+            },
+            body: file.files[0]
+          })
+        const imageUrl = url.data.url.split('?')[0]
+        await axios.post('http://localhost:3000/chat',{
+            groupId:groupSelected,
+            msg:imageUrl,
+            image:true
+        },{
+            headers: {
+                      'Authorization': `Bearer ${localStorage.getItem('token')}` ,
+                    }});
+        } catch (error) {
+            console.log(error)
+        }
+    });
+
     await updateGroups();
     await showGroups();
 
@@ -65,6 +91,12 @@ async function showChats(){
     const chatBox=document.getElementById('chat-container');
     chatBox.innerHTML='';
     for(x of chatLog){
+        if(x.image){
+            const tr=document.createElement('tr');
+        tr.innerHTML=`<td>${x.name} : <img src="${x.msg}" style="width:180px;heigth:180px;border-radius:10%"></td>`;
+        chatBox.appendChild(tr);
+        continue;
+        }
         // if(selfChat.some(e=>e.id===x.id)) x.name="YOU"
         // console.log(selfChat.some(e=>e.id===parseInt(x.id)))
         const tr=document.createElement('tr');
