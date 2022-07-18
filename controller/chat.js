@@ -9,7 +9,7 @@ exports.getChats=async(req,res)=>{
         const group_id=req.params.id; 
         const chat_id=req.query.id;
         const userId=req.user.id;
-        console.log(1)
+        // console.log(1)
         const user=await User.findByPk(userId);
         const group=await user.getGroups({where:{id:group_id}});
         // console.log(group);
@@ -29,7 +29,8 @@ exports.postChat=async(req,res)=>{
         const user=await User.findByPk(req.user.id);
         const groupId=req.body.groupId;
         const group=await Groups.findByPk(groupId);
-        const chat=await group.createChat({name:user.name,msg:req.body.msg,groupId:groupId})
+        const image=req.body.image
+        const chat=await group.createChat({name:user.name,msg:req.body.msg,groupId:groupId,image:image})
         // const ggg=await user.getGroups();
         // const chatss=await ggg[0].getChats();
         res.json({status:200});

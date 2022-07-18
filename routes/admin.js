@@ -9,4 +9,7 @@ router.post('/getmember',auth,adminController.showMembers);
 
 router.post('/removemember',auth,adminController.removeMembers);
 
+router.post('/makeadmin',auth,adminController.makeAdmin);
+
+
 module.exports=router;

@@ -7,7 +7,7 @@ const GroupMem=sequelize.define('groupmembers',{
         allowNull: false,
         primaryKey: true
       },
-    accepted:{
+    admin:{
       type:Sequelize.BOOLEAN,
       defaultValue:false
     }

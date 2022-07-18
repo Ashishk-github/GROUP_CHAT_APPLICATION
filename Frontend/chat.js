@@ -1,4 +1,4 @@
-var chatLog=[];
+var chatLog={};
 // var selfChat=[];
 var groups=[];
 var groupSelected=0;
@@ -8,6 +8,11 @@ window.addEventListener('DOMContentLoaded',async ()=>{
 
     if(localStorage.getItem('groups')) groups=JSON.parse(localStorage.getItem('groups'));
     else localStorage.setItem('groups',JSON.stringify(groups));
+
+    if(localStorage.getItem('chatLog')) chatLog=JSON.parse(localStorage.getItem('chatLog'));
+    else localStorage.setItem('chatLog',JSON.stringify(chatLog));
+
+    if(groupSelected!==0) document.getElementById('msg-div').style.display='block';
 
     document.getElementById('send-msg').addEventListener("click",async(event)=>{
         await axios.post('http://localhost:3000/chat',{
@@ -36,7 +41,7 @@ window.addEventListener('DOMContentLoaded',async ()=>{
         await fetch(url.data.url, {
             method:"PUT",
             headers: {
-              "Content-Type": "multipart/form-data"
+              "Content-Type": `${file.files[0].type}`
             },
             body: file.files[0]
           })
@@ -53,10 +58,8 @@ window.addEventListener('DOMContentLoaded',async ()=>{
             console.log(error)
         }
     });
-
-    await updateGroups();
     await showGroups();
-
+    await updateGroups();
     document.getElementById('group-container').addEventListener("click",async(event)=>{
         event.preventDefault();
         console.log(event.target.id);
@@ -68,14 +71,25 @@ window.addEventListener('DOMContentLoaded',async ()=>{
             location.href='./groupinfo.html'
             return
         }
-        getChat(id)
+        groupSelected=id;
+        localStorage.setItem('groupSelected',id)
+        showChats();
     });
-    if(groupSelected!==0) getChat(groupSelected);
-    // getChat();
-    // setInterval(()=>getChat(),1000);
+    setInterval(()=>{
+        if(groupSelected!==0) getChat(groupSelected);
+        updateGroups();
+    },1000);
+    getChat(groupSelected);
+    showChats();
+    
 })
 async function getChat(id){
-    const chats=await axios.get(`http://localhost:3000/chat/${id}?id=0`,
+    if(!chatLog[id]) {
+        chatLog[id]=[];
+    }
+    const chat=chatLog[id];
+    const chatId=(chat.length>0)?chat[chat.length-1].id:0;
+    const chats=await axios.get(`http://localhost:3000/chat/${id}?id=${chatId}`,
         {
             headers: {
                       'Authorization': `Bearer ${localStorage.getItem('token')}` 
@@ -83,17 +97,21 @@ async function getChat(id){
         );
     groupSelected=id;
     localStorage.setItem('groupSelected',groupSelected);
-    chatLog=chats.data;
+    if(chats.data.length<1) return;
+    chatLog[id]=chat.concat(chats.data);
+    localStorage.setItem('chatLog',JSON.stringify(chatLog));
     showChats();
 }
 
 async function showChats(){
+    if(groupSelected!==0) document.getElementById('msg-div').style.display='block';
     const chatBox=document.getElementById('chat-container');
     chatBox.innerHTML='';
-    for(x of chatLog){
+    for(x of chatLog[groupSelected]){
         if(x.image){
             const tr=document.createElement('tr');
-        tr.innerHTML=`<td>${x.name} : <img src="${x.msg}" style="width:180px;heigth:180px;border-radius:10%"></td>`;
+        tr.innerHTML=`<td>${x.name} : <embed src="${x.msg}" style="width:180px;heigth:180px;border-radius:10%"></td>`;
+        tr.className='.tr-embed';
         chatBox.appendChild(tr);
         continue;
         }
@@ -113,13 +131,18 @@ async function showChats(){
 //     console.log(tr);
 // }
 async function updateGroups(){
-    const groupres= await axios.get(`http://localhost:3000/mygroups`,{
+    const lastGroup=(groups.length>0)?groups[groups.length-1].id:0
+    const groupres= await axios.get(`http://localhost:3000/mygroups?id=${lastGroup}`,{
         headers: {
                   'Authorization': `Bearer ${localStorage.getItem('token')}` 
                 }}
     );
-    groups=groupres.data;
+    if(groupres.data.length===0) return;
+    
+    groups=groups.concat(groupres.data);
+    // console.log(groupres);
     localStorage.setItem('groups',JSON.stringify(groups));
+    showGroups();
 }
 
 function showGroups(){
