@@ -16,7 +16,7 @@ window.addEventListener('DOMContentLoaded',async ()=>{
     if(groupSelected!==0) document.getElementById('msg-div').style.display='block';
 
     document.getElementById('send-msg').addEventListener("click",async(event)=>{
-        await axios.post('https://my-conversation.herokuapp.com/chat',{
+        await axios.post('https://49.37.190.55:3000/chat',{
             groupId:groupSelected,
             msg:document.getElementById('msg-input').value
         },
@@ -33,7 +33,7 @@ window.addEventListener('DOMContentLoaded',async ()=>{
     file.addEventListener('change',async()=>{
         try {
             if(!confirm(`are you sure want to upload ${file.files[0].name}`)) return;
-        const url=await axios.get('https://my-conversation.herokuapp.com/media',{
+        const url=await axios.get('https://49.37.190.55:3000/media',{
             headers: {
                       'Authorization': `Bearer ${localStorage.getItem('token')}` ,
                     }});
@@ -47,7 +47,7 @@ window.addEventListener('DOMContentLoaded',async ()=>{
             body: file.files[0]
           })
         const imageUrl = url.data.url.split('?')[0]
-        await axios.post('https://my-conversation.herokuapp.com/chat',{
+        await axios.post('https://49.37.190.55:3000/chat',{
             groupId:groupSelected,
             msg:imageUrl,
             image:true
@@ -94,7 +94,7 @@ window.addEventListener('DOMContentLoaded',async ()=>{
 //     }
 //     const chat=chatLog[id];
 //     const chatId=(chat.length>0)?chat[chat.length-1].id:0;
-//     const chats=await axios.get(`https://my-conversation.herokuapp.com/chat/${id}?id=${chatId}`,
+//     const chats=await axios.get(`https://49.37.190.55:3000/chat/${id}?id=${chatId}`,
 //         {
 //             headers: {
 //                       'Authorization': `Bearer ${localStorage.getItem('token')}` 
@@ -137,7 +137,7 @@ async function showChats(){
 // }
 async function updateGroups(){
     const lastGroup=(groups.length>0)?groups[groups.length-1].id:0
-    const groupres= await axios.get(`https://my-conversation.herokuapp.com/mygroups?id=${lastGroup}`,{
+    const groupres= await axios.get(`https://49.37.190.55:3000/mygroups?id=${lastGroup}`,{
         headers: {
                   'Authorization': `Bearer ${localStorage.getItem('token')}` 
                 }}
