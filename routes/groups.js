@@ -7,4 +7,5 @@ router.post('/creategroup',auth,groupController.create);
 
 router.get('/mygroups',auth,groupController.showGroups);
 
+
 module.exports=router;

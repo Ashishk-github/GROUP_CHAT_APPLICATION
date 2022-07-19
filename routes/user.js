@@ -8,6 +8,6 @@ router.get('/chat/:id',auth,chatController.getChats);
 
 router.post('/chat',auth,chatController.postChat);
 
-router.use('/media',auth,mediaController.postMedia);
+// router.use('/media',auth,mediaController.postMedia);
 
 module.exports=router;

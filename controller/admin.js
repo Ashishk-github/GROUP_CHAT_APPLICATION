@@ -1,20 +1,13 @@
 const User = require('../models/user');
-const Chat = require('../models/chats');
 const Groups = require('../models/groups');
-const GroupMem = require('../models/group members');
-const {Op, where}=require('sequelize');
 
 exports.addMembers=async(req,res)=>{
     try {
-        const phno=+req.body.phno;
-        const groupId=req.body.gid;
-        const member=await User.findOne({where:{phno:phno}});
-        if(!member) return res.sendStatus(404);
-        const user=await User.findByPk(req.user.id);
-        const group=await user.getGroups({where:{id:groupId}});
-        if(!group[0].admin===user.id) return res.sendStatus(401);
-        const newuser=await group[0].addUser(member);
-        res.json(newuser);
+        if(!Groups.isAdmin(req.user,req.query.gid)) return res.status(401).json({success:false});
+        const group=await Groups.findById(req.query.gid);
+        const addMember=await Groups.addUser.call(group,req.query.id);
+        res.json(addMember);
+
     } catch (err) {
         console.log(err);
         res.sendStatus(500)
@@ -23,15 +16,9 @@ exports.addMembers=async(req,res)=>{
 
 exports.showMembers=async(req,res)=>{
     try{
-        const group=await Groups.findByPk(req.body.gid);
-        const [userAdmin]=await group.getUsers({where:{id:req.user.id}});
-        // console.log(userAdmin.groupmembers.admin);
-        if(!userAdmin.groupmembers.admin) return res.sendStatus(401);
-        const members=await group.getUsers();
-        let result=[]
-        for(x of members) result.push({id:x.id,name:x.name,phno:x.phno,email:x.email});
-        res.json(result);
-
+        if(!Groups.isAdmin(req.user,req.query.gid)) return res.status(401).json({success:false});
+        const group=await Groups.findById(req.query.gid);
+        res.json(group.members) ;
     } catch (err) {
         console.log(err);
         res.sendStatus(500)
@@ -40,13 +27,9 @@ exports.showMembers=async(req,res)=>{
 
 exports.removeMembers=async(req,res)=>{
     try{
-        const user=await User.findByPk(req.user.id);
-        const group=await Groups.findByPk(req.body.gid);
-        if(!group.admin===user.id) return res.sendStatus(401);
-        const [member]=await group.getUsers({where:{id:req.body.id}});
-        const remove=await member.groupmembers.destroy();
+        if(!Groups.isAdmin(req.user,req.query.gid)) return res.status(401).json({success:false});
+        const remove=await Groups.removeMember(req.query.gid,req.query.id);
         res.json(remove);
-
     } catch (err) {
         console.log(err);
         res.sendStatus(500)
@@ -55,14 +38,12 @@ exports.removeMembers=async(req,res)=>{
 
 exports.makeAdmin=async(req,res)=>{
     try{
-        const group=await Groups.findByPk(req.body.gid);
-        const [userAdmin]=await group.getUsers({where:{id:req.user.id}});
-        console.log(userAdmin.groupmembers.admin);
-        if(!userAdmin.groupmembers.admin) return res.sendStatus(401);
-        const groupMember=await GroupMem.findOne({where:{userId:req.body.id,groupId:req.body.gid}});
-        await groupMember.update({admin:true})
-        res.status(200).json({success:true});
-
+        if(!Groups.isAdmin(req.user,req.query.gid)) return res.status(401).json({success:false});
+        const group=await Groups.findById(req.query.gid);
+        const mem=group.members;
+        mem[req.query.id.toString()]=true;
+        const update=await Groups.updateAdmin.call(group,mem);
+        res.json(update);
     } catch (err) {
         console.log(err);
         res.sendStatus(500)
