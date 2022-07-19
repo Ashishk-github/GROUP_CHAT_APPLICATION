@@ -1,6 +1,5 @@
 const {getDb}=require('../util/database');
 const mongodb=require('mongodb');
-const { getChats } = require('../controller/chat');
 const ObjectId = mongodb.ObjectId;
 class Group {
   constructor(name,members,chats){
@@ -52,7 +51,7 @@ class Group {
       console.log(error)
     }
   }
-  static postChat(gid,msg,user){
+  static async postChatt(gid,msg,user){
     const db=getDb();
     const userId=user._id.toString();
     const name=user.name;

@@ -1,16 +1,17 @@
-var chatLog={};
+// var chatLog={};
 // var selfChat=[];
 var groups=[];
 var groupSelected=0;
+var selectedGroup={};
 window.addEventListener('DOMContentLoaded',async ()=>{
-    if(localStorage.getItem('groupSelected')) groupSelected=parseInt(localStorage.getItem('groupSelected')) ;
+    if(localStorage.getItem('groupSelected')) groupSelected=localStorage.getItem('groupSelected');
     else localStorage.setItem('groupSelected',groupSelected);
 
     if(localStorage.getItem('groups')) groups=JSON.parse(localStorage.getItem('groups'));
     else localStorage.setItem('groups',JSON.stringify(groups));
 
-    if(localStorage.getItem('chatLog')) chatLog=JSON.parse(localStorage.getItem('chatLog'));
-    else localStorage.setItem('chatLog',JSON.stringify(chatLog));
+    if(localStorage.getItem('selectedGroup')) selectedGroup=JSON.parse(localStorage.getItem('selectedGroup'));
+    else localStorage.setItem('selectedGroup',JSON.stringify(selectedGroup));
 
     if(groupSelected!==0) document.getElementById('msg-div').style.display='block';
 
@@ -58,7 +59,7 @@ window.addEventListener('DOMContentLoaded',async ()=>{
             console.log(error)
         }
     });
-    await showGroups();
+    // await showGroups();
     await updateGroups();
     document.getElementById('group-container').addEventListener("click",async(event)=>{
         event.preventDefault();
@@ -76,45 +77,49 @@ window.addEventListener('DOMContentLoaded',async ()=>{
         showChats();
     });
     setInterval(()=>{
-        if(groupSelected!==0) getChat(groupSelected);
+        // if(groupSelected!==0) getChat(groupSelected);
         updateGroups();
     },1000);
-    getChat(groupSelected);
-    showChats();
+    if(groupSelected!=0){
+        selectedGroup=groups.find(a=>a._id==groupSelected)
+        localStorage.setItem('selectedGroup',JSON.stringify(selectedGroup));
+        // getChat(groupSelected);
+        showChats();
+    }
     
 })
-async function getChat(id){
-    if(!chatLog[id]) {
-        chatLog[id]=[];
-    }
-    const chat=chatLog[id];
-    const chatId=(chat.length>0)?chat[chat.length-1].id:0;
-    const chats=await axios.get(`http://localhost:3000/chat/${id}?id=${chatId}`,
-        {
-            headers: {
-                      'Authorization': `Bearer ${localStorage.getItem('token')}` 
-                    }}
-        );
-    groupSelected=id;
-    localStorage.setItem('groupSelected',groupSelected);
-    if(chats.data.length<1) return;
-    chatLog[id]=chat.concat(chats.data);
-    localStorage.setItem('chatLog',JSON.stringify(chatLog));
-    showChats();
-}
+// async function getChat(id){
+//     if(!chatLog[id]) {
+//         chatLog[id]=[];
+//     }
+//     const chat=chatLog[id];
+//     const chatId=(chat.length>0)?chat[chat.length-1].id:0;
+//     const chats=await axios.get(`http://localhost:3000/chat/${id}?id=${chatId}`,
+//         {
+//             headers: {
+//                       'Authorization': `Bearer ${localStorage.getItem('token')}` 
+//                     }}
+//         );
+//     groupSelected=id;
+//     localStorage.setItem('groupSelected',groupSelected);
+//     if(chats.data.length<1) return;
+//     chatLog[id]=chat.concat(chats.data);
+//     localStorage.setItem('chatLog',JSON.stringify(chatLog));
+//     showChats();
+// }
 
 async function showChats(){
     if(groupSelected!==0) document.getElementById('msg-div').style.display='block';
     const chatBox=document.getElementById('chat-container');
     chatBox.innerHTML='';
-    for(x of chatLog[groupSelected]){
-        if(x.image){
-            const tr=document.createElement('tr');
-        tr.innerHTML=`<td>${x.name} : <embed src="${x.msg}" style="width:180px;heigth:180px;border-radius:10%"></td>`;
-        tr.className='.tr-embed';
-        chatBox.appendChild(tr);
-        continue;
-        }
+    for(x of selectedGroup.chats){
+        // if(x.image){
+        //     const tr=document.createElement('tr');
+        // tr.innerHTML=`<td>${x.name} : <embed src="${x.msg}" style="width:180px;heigth:180px;border-radius:10%"></td>`;
+        // tr.className='.tr-embed';
+        // chatBox.appendChild(tr);
+        // continue;
+        // }
         // if(selfChat.some(e=>e.id===x.id)) x.name="YOU"
         // console.log(selfChat.some(e=>e.id===parseInt(x.id)))
         const tr=document.createElement('tr');
@@ -139,9 +144,10 @@ async function updateGroups(){
     );
     if(groupres.data.length===0) return;
     
-    groups=groups.concat(groupres.data);
+    groups=(groupres.data);
     // console.log(groupres);
     localStorage.setItem('groups',JSON.stringify(groups));
+    if(groupSelected!=0)selectedGroup=groups.find(a=>a._id==groupSelected)
     showGroups();
 }
 
@@ -150,7 +156,8 @@ function showGroups(){
     if(groups.length>0) table.innerHTML='';
     for(x of groups){
         const tr=document.createElement('tr');
-        tr.innerHTML=`<td id='${x.id}'>${x.name}</td><button id="info">i</button>`;
+        tr.innerHTML=`<td id='${x._id.toString()}'>${x.name}</td><button id="info">i</button>`;
         table.appendChild(tr);
     }
+    showChats();
 }

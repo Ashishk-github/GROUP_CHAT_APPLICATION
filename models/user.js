@@ -1,5 +1,6 @@
 const {getDb}=require('../util/database');
 const mongodb=require('mongodb');
+const Group = require('./groups');
 const ObjectId = mongodb.ObjectId;
 class User {
   constructor(name,email,password,phno,groups){
@@ -57,9 +58,14 @@ class User {
       return db
       .collection('user')
       .findOne({_id:user._id})
-      .then(user=>{
+      .then(async(user)=>{
         // console.log(user);
-        return user.groups;
+        let groups=[];
+        for(let x of user.groups){
+          const group=await Group.findById(x);
+          groups.push(group);
+        }
+        return groups;
       })
       .catch(err=>console.log(err));
   }

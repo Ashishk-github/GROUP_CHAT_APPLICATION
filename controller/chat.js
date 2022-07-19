@@ -19,8 +19,8 @@ exports.postChat=async(req,res)=>{
     try {
         const groupId=req.body.groupId;
         const msg=req.body.msg;
-        const group=await Groups.postChat(groupId,msg,req.user);
-        res.json({status:200});
+        const group=await Groups.postChatt(groupId,msg,req.user);
+        res.json({group,status:200});
     } catch (err) {
         console.log(err);
         res.sendStatus(500)
