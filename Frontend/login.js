@@ -13,7 +13,7 @@ window.addEventListener('DOMContentLoaded',()=>{
             localStorage.setItem('groupSelected','0');
             localStorage.setItem('groups','[]');
             localStorage.setItem('Members',`[]`);
-            location.href='http://localhost:3000/chat.html';
+            location.href='https://my-conversation.herokuapp.com/chat.html';
         }
         else if(body.status===403) errmsg('Please enter correct password');
         else if(body.status===404) errmsg('User doesnot exist');

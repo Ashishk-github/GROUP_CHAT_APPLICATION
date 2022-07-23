@@ -2,7 +2,7 @@ var groupMembers=[];
 window.addEventListener('DOMContentLoaded',async ()=>{
     groupSelected=localStorage.getItem('groupSelected')
     document.getElementById('addmember').addEventListener("click",async(event)=>{
-        await axios.post('http://localhost:3000/addmember',{
+        await axios.post('https://my-conversation.herokuapp.com/addmember',{
             gid:parseInt(localStorage.getItem('groupSelected')),
             phno:document.getElementById('phno-add').value
         },
@@ -23,7 +23,7 @@ window.addEventListener('DOMContentLoaded',async ()=>{
         if(target.id==='remove'){
             console.log(target.parentNode.firstChild.id);
             
-            await axios.post('http://localhost:3000/removemember',{
+            await axios.post('https://my-conversation.herokuapp.com/removemember',{
                 gid:parseInt(localStorage.getItem('groupSelected')),
                 id:id
             },
@@ -35,7 +35,7 @@ window.addEventListener('DOMContentLoaded',async ()=>{
             await getMembers();
             await showMembers();
         }else if(target.id==='makeadmin'){
-            const resp=await axios.post('http://localhost:3000/makeadmin',{
+            const resp=await axios.post('https://my-conversation.herokuapp.com/makeadmin',{
                 gid:parseInt(localStorage.getItem('groupSelected')),
                 id:id
             },
@@ -54,7 +54,7 @@ window.addEventListener('DOMContentLoaded',async ()=>{
 })
 
 async function getMembers(){
-    const users=await axios.post('http://localhost:3000/getmember',{
+    const users=await axios.post('https://my-conversation.herokuapp.com/getmember',{
             gid:parseInt(localStorage.getItem('groupSelected')),
         },
         {

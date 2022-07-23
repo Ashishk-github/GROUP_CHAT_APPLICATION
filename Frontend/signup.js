@@ -10,7 +10,7 @@ window.addEventListener('DOMContentLoaded',()=>{
         // console.log(body)
         if(body.status===200) {
             alert('Successfully registered,Please Login');
-            location.href='http://localhost:3000/login.html';
+            location.href='https://my-conversation.herokuapp.com/login.html';
         }
         else if(body.status===403) errmsg('User already exists');
         else if(body.status===500) errmsg('Please try again later');

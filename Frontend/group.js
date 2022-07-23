@@ -5,7 +5,7 @@ window.addEventListener('DOMContentLoaded',async ()=>{
     const name=document.getElementById('group-name').value;
     // console.log(name)
     document.getElementById('group-name').value='';
-    const group=await axios.post('http://localhost:3000/creategroup',{
+    const group=await axios.post('https://my-conversation.herokuapp.com/creategroup',{
         name
     },
     {
