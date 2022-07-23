@@ -156,7 +156,7 @@ function showGroups(){
     if(groups.length>0) table.innerHTML='';
     for(x of groups){
         const tr=document.createElement('tr');
-        tr.innerHTML=`<td id='${x._id.toString()}'>${x.name}</td><button id="info">i</button>`;
+        tr.innerHTML=`<td id='${x._id.toString()}'>${x.name}</td><td><button id="info">i</button></td>`;
         table.appendChild(tr);
     }
     showChats();
