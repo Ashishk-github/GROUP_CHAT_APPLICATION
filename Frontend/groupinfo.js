@@ -3,7 +3,7 @@ window.addEventListener('DOMContentLoaded',async ()=>{
     groupSelected=localStorage.getItem('groupSelected')
     document.getElementById('addmember').addEventListener("click",async(event)=>{
         await axios.post('https://my-conversation.herokuapp.com/addmember',{
-            gid:parseInt(localStorage.getItem('groupSelected')),
+            gid:(localStorage.getItem('groupSelected')),
             phno:document.getElementById('phno-add').value
         },
         {
@@ -24,7 +24,7 @@ window.addEventListener('DOMContentLoaded',async ()=>{
             console.log(target.parentNode.firstChild.id);
             
             await axios.post('https://my-conversation.herokuapp.com/removemember',{
-                gid:parseInt(localStorage.getItem('groupSelected')),
+                gid:(localStorage.getItem('groupSelected')),
                 id:id
             },
             {
@@ -36,7 +36,7 @@ window.addEventListener('DOMContentLoaded',async ()=>{
             await showMembers();
         }else if(target.id==='makeadmin'){
             const resp=await axios.post('https://my-conversation.herokuapp.com/makeadmin',{
-                gid:parseInt(localStorage.getItem('groupSelected')),
+                gid:(localStorage.getItem('groupSelected')),
                 id:id
             },
             {
@@ -55,7 +55,7 @@ window.addEventListener('DOMContentLoaded',async ()=>{
 
 async function getMembers(){
     const users=await axios.post('https://my-conversation.herokuapp.com/getmember',{
-            gid:parseInt(localStorage.getItem('groupSelected')),
+            gid:(localStorage.getItem('groupSelected')),
         },
         {
             headers: {
