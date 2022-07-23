@@ -41,7 +41,7 @@ app.use(userRoutes);
 app.use(groupRoutes);
 app.use(adminRoutes);
 app.use((req,res)=>{
-    res.sendFile(path.join(__dirname,`frontend`,`${req.url}`));
+    res.sendFile(path.join(__dirname,`Frontend`,`${req.url}`));
 })
 
 //Relations
