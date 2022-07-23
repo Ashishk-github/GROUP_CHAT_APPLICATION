@@ -18,16 +18,23 @@ class Group {
     .catch(err=>console.log(err));
     // console.log(res)
   }
-  static addUser(id){
-    const db=getDb();
-    // console.log(this);
-    const mem=this.members;
-    mem[id]=false;
-    return db.collection('group')
-    .updateOne({_id:this._id},{ $set : {members:mem}})
-    // .then(result=>console.log(result))
-    .catch(err=>console.log(err));
-    // console.log(res)
+  static async addUser(phno){
+    try {
+      const db=getDb();
+      // console.log(id);
+      const mem=this.members;
+      const person=await db.collection('user').findOne({phno:phno});
+      // console.log(person._id.toString(),'aaaa')
+      mem[person._id.toString()]=false;
+      // console.log(mem);
+      return db.collection('group')
+      .updateOne({_id:this._id},{ $set : {members:mem}})
+      // .then(result=>console.log(result))
+      // .catch(err=>console.log(err));
+      // console.log(res)
+    } catch (error) {
+      console.log(error);
+    }
   }
   static async removeMember(gid,id){
     try {
@@ -81,7 +88,7 @@ class Group {
       .collection('group')
       .findOne({_id:new ObjectId(gid)})
       .then(group=>{
-        console.log(group.members[user._id.toString()]);
+        // console.log(group.members[user._id.toString()]);
         return group.members[user._id.toString()];
       })
       .catch(err=>console.log(err));

@@ -53,6 +53,18 @@ class User {
       })
       .catch(err=>console.log(err));
   }
+  static find(id){
+    const db=getDb();
+    // console.log(id)
+      return db
+      .collection('user')
+      .find({_id:{$in:id}}).toArray()
+      .then(user=>{
+        // console.log(user);
+        return user;
+      })
+      .catch(err=>console.log(err));
+  }
   static getGroups(user){
     const db=getDb();
       return db
