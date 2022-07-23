@@ -41,7 +41,7 @@ app.use(userRoutes);
 app.use(groupRoutes);
 app.use(adminRoutes);
 app.use((req,res)=>{
-    res.sendFile(path.join(__dirname,`frontend`,`${req.url}`));
+    res.sendFile(path.join(__dirname,`Frontend`,`${req.url}`));
 })
 
 //Relations
@@ -68,5 +68,5 @@ app.use((req,res)=>{
 
 mongoConnect(()=>{
     // console.log(client);
-    app.listen(3000);
+    app.listen(process.env.PORT||3000);
 })
