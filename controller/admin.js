@@ -3,9 +3,9 @@ const Groups = require('../models/groups');
 
 exports.addMembers=async(req,res)=>{
     try {
-        if(!Groups.isAdmin(req.user,req.query.gid)) return res.status(401).json({success:false});
-        const group=await Groups.findById(req.query.gid);
-        const addMember=await Groups.addUser.call(group,req.query.id);
+        if(!Groups.isAdmin(req.user,req.body.gid)) return res.status(401).json({success:false});
+        const group=await Groups.findById(req.body.gid);
+        const addMember=await Groups.addUser.call(group,req.body.id);
         res.json(addMember);
 
     } catch (err) {
@@ -16,8 +16,8 @@ exports.addMembers=async(req,res)=>{
 
 exports.showMembers=async(req,res)=>{
     try{
-        if(!Groups.isAdmin(req.user,req.query.gid)) return res.status(401).json({success:false});
-        const group=await Groups.findById(req.query.gid);
+        if(!Groups.isAdmin(req.user,req.body.gid)) return res.status(401).json({success:false});
+        const group=await Groups.findById(req.body.gid);
         res.json(group.members) ;
     } catch (err) {
         console.log(err);
@@ -27,8 +27,8 @@ exports.showMembers=async(req,res)=>{
 
 exports.removeMembers=async(req,res)=>{
     try{
-        if(!Groups.isAdmin(req.user,req.query.gid)) return res.status(401).json({success:false});
-        const remove=await Groups.removeMember(req.query.gid,req.query.id);
+        if(!Groups.isAdmin(req.user,req.body.gid)) return res.status(401).json({success:false});
+        const remove=await Groups.removeMember(req.body.gid,req.body.id);
         res.json(remove);
     } catch (err) {
         console.log(err);
@@ -38,10 +38,10 @@ exports.removeMembers=async(req,res)=>{
 
 exports.makeAdmin=async(req,res)=>{
     try{
-        if(!Groups.isAdmin(req.user,req.query.gid)) return res.status(401).json({success:false});
-        const group=await Groups.findById(req.query.gid);
+        if(!Groups.isAdmin(req.user,req.body.gid)) return res.status(401).json({success:false});
+        const group=await Groups.findById(req.body.gid);
         const mem=group.members;
-        mem[req.query.id.toString()]=true;
+        mem[req.body.id.toString()]=true;
         const update=await Groups.updateAdmin.call(group,mem);
         res.json(update);
     } catch (err) {
